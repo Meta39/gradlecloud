@@ -1,0 +1,5 @@
+rootProject.name = 'gradlecloud'
+include 'common'
+include 'gateway'
+include 'services'
+

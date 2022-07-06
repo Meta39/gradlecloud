@@ -1,0 +1,23 @@
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848 #nacos的url
+#        namespace: 8c5b18b2-929a-40a0-ba2e-a7714c61d249 #命名空间ID
+        #单环境配置
+#        group: DEFAULT_GROUP #nacos配置管理——》配置列表的Group
+#        name: ${spring.application.name} #nacos配置管理——》配置列表的Data Id
+        file-extension: yaml #默认是properties
+      #多环境配置
+        extension-configs[0]:
+          data-id: ${spring.application.name}
+          group: DEFAULT_GROUP
+          refresh: true
+        extension-configs[1]:
+          data-id: redis_config
+          group: DEFAULT_GROUP
+          refresh: true

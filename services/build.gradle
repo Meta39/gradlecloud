@@ -1,0 +1,17 @@
+apply plugin: 'org.springframework.boot'
+dependencies {
+    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config'
+    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+//    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+//    implementation 'org.springframework.boot:spring-boot-starter-validation'
+//    implementation 'mysql:mysql-connector-java'
+//    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter'
+//    implementation 'com.github.pagehelper:pagehelper-spring-boot-starter'
+}
+bootJar {//修改打成jar包以后的名字
+    baseName('services')//自定义的jar包名
+    version(null)//版本号
+    mainClassName = 'com.fu.services.ServicesApplication'
+}

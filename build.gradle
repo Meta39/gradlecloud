@@ -1,0 +1,72 @@
+buildscript {//构建gradle脚本自身需要的资源，可以声明的资源包括依赖项、第三方插件、maven仓库地址等
+    ext{
+        //统一版本管理
+        lombokVersion = '1.18.20'//lombok版本
+        springBootVersion = '2.3.12.RELEASE'//spring boot 版本
+        springCloudVersion = 'Hoxton.SR12'//spring cloud 版本
+        springCloudAlibabaVersion = '2.2.7.RELEASE'//spring cloud alibaba 版本
+        springCloudStarterBootstrapVersion = '3.1.2'//bootstrap.yml版本
+        commonsLangVersion = '2.5'//StringUtils工具类 commons-lang版本
+        mysqlVersion = '8.0.23'//mysql版本
+        mybatisSpringBootVersion = '2.1.0'//mybatis版本
+        pagehelperVersion = '1.2.13'//分页插件pageHelper版本
+        japidocsVersion = '1.4.4'//生成离线接口文档JApiDocs版本
+    }
+
+    //设置仓库
+    repositories {
+        //从前到后顺序执行，找不到就往后找。
+        mavenLocal()//本地仓库
+        maven { url 'https://maven.aliyun.com/repository/public' }//镜像仓库
+        mavenCentral()//官方仓库
+    }
+
+    dependencies {
+        //spring-boot-gradle插件，方便版本管理
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+//全局配置，包括root和其子项目
+allprojects {
+    apply plugin: 'java'
+    group 'com.fu'//项目组
+    version '1'//项目版本
+    sourceCompatibility = 1.8//java版本
+    targetCompatibility = 1.8//java版本
+
+    tasks.withType(JavaCompile){
+        options.encoding = "UTF-8"
+    }
+
+    repositories {
+        //从前到后顺序执行，找不到就往后找。
+        mavenLocal()//本地仓库
+        maven { url 'https://maven.aliyun.com/repository/public' }//镜像仓库
+        mavenCentral()//官方仓库
+    }
+}
+
+//配置所有子项目
+subprojects {
+    apply plugin: 'io.spring.dependency-management'//版本管理插件
+
+    //dependencyManagement版本统一管理，类似maven的dependencyManagement
+    dependencyManagement{
+        dependencies {
+            //统一版本管理
+            dependency "org.projectlombok:lombok:${lombokVersion}"
+            dependency "org.springframework.cloud:spring-cloud-starter-bootstrap:${springCloudStarterBootstrapVersion}"
+            dependency "commons-lang:commons-lang:${commonsLangVersion}"
+            dependency "mysql:mysql-connector-java:${mysqlVersion}"
+            dependency "org.mybatis.spring.boot:mybatis-spring-boot-starter:${mybatisSpringBootVersion}"
+            dependency "com.github.pagehelper:pagehelper-spring-boot-starter:${pagehelperVersion}"
+            dependency "io.github.yedaxia:japidocs:${japidocsVersion}"
+        }
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"//Spring Boot
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"//Spring Cloud
+            mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${springCloudAlibabaVersion}"//Spring Cloud Alibaba
+        }
+    }
+}
